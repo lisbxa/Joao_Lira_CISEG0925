@@ -68,4 +68,71 @@ def contar_minusculas(palavra):
             count += 1
     return count
 
-def ordenar_por_qtd_minusculas(
+def ordenar_por_qtd_minusculas(lista_palavras):
+    """
+    Ordena a lista usando a contagem de minúsculas como chave (do menor para o maior).
+    """
+    # key=contar_minusculas: Usa o resultado da função de contagem como peso/chave.
+    resultado = sorted(lista_palavras, key=contar_minusculas)
+    return resultado
+
+# ----------------------------------------------------------------------
+# 5. Agrupar palavras pela letra inicial e ordenar cada grupo (A -> Z)
+# ----------------------------------------------------------------------
+
+def agrupar_e_ordenar(lista_palavras):
+    """
+    Agrupa as palavras pela primeira letra e ordena as listas internas.
+    """
+    # Cria um dicionário que inicializa o valor como uma lista vazia (defaultdict)
+    grupos = defaultdict(list)
+    
+    # 1. Agrupamento
+    for palavra in lista_palavras:
+        # Pega a primeira letra em minúsculas para o agrupamento
+        primeira_letra = palavra[0].lower()
+        grupos[primeira_letra].append(palavra)
+        
+    # 2. Ordenação Interna e Conversão para dicionário normal
+    resultado_final = {}
+    
+    # Ordena as chaves do dicionário (opcional, para um output mais limpo)
+    for chave in sorted(grupos.keys()):
+        # Ordena a lista de palavras para cada grupo A->Z
+        lista_ordenada = sorted(grupos[chave])
+        resultado_final[chave] = lista_ordenada
+        
+    return resultado_final
+
+# ----------------------------------------------------------------------
+# Testes com os exemplos fornecidos
+# ----------------------------------------------------------------------
+
+print("--- 1. Ordenar A -> Z (Implementação Manual) ---")
+lista_1 = ["banana", "uva", "abacaxi", "laranja"]
+# Nota: É preciso passar uma cópia se quisermos usar o original mais tarde
+print(f"Original: {lista_1}")
+print(f"Resultado: {ordenar_a_z_manual(lista_1.copy())}\n") # .copy() para não alterar a original
+
+print("--- 2. Ordenar Z -> A, Ignorando Case ---")
+lista_2 = ["Python", "inteligência", "Aprender", "dados", "Rede"]
+print(f"Original: {lista_2}")
+print(f"Resultado: {ordenar_z_a_case_insensitive(lista_2)}\n")
+
+print("--- 3. Ordenar Caracteres de uma Palavra ---")
+palavra_3 = "algoritmo"
+print(f"Original: {palavra_3}")
+print(f"Resultado: {ordenar_caracteres(palavra_3)}\n")
+
+print("--- 4. Ordenar pela Quantidade de Minúsculas ---")
+lista_4 = ["PYthon", "banana", "CÓDIGO", "intELIGENTE", "dados"]
+print(f"Original: {lista_4}")
+print(f"Resultado: {ordenar_por_qtd_minusculas(lista_4)}\n")
+
+print("--- 5. Agrupar pela Inicial e Ordenar Grupos ---")
+lista_5 = ["banana", "bola", "abacaxi", "arroz", "uva", "urso"]
+print(f"Original: {lista_5}")
+resultado_5 = agrupar_e_ordenar(lista_5)
+print("Resultado:")
+for chave, valor in resultado_5.items():
+    print(f"  '{chave}': {valor}")
